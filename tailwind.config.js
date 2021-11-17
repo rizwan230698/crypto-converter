@@ -11,6 +11,7 @@ module.exports = {
           300: "#EAEAEA",
           50: "#f7f7f7",
         },
+        philippineGray: "#8c8c8c",
       },
     },
   },

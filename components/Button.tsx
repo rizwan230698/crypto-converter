@@ -5,14 +5,23 @@ export type ButtonProps = {
   textColor?: string;
   onClick?: () => void;
   children: ReactNode;
+  minHeight?: string;
 };
 
-const Button = ({ bgColor, textColor, onClick, children }: ButtonProps) => {
+const Button = ({
+  bgColor,
+  textColor,
+  minHeight,
+  onClick,
+  children,
+}: ButtonProps) => {
   return (
     <button
       onClick={onClick}
       className={`flex-1 ${bgColor ? bgColor : "bg-blue"} ${
         textColor ? textColor : "text-white"
+      } ${
+        minHeight && minHeight
       } p-2 rounded-md hover:bg-opacity-90 font-medium`}
     >
       {children}
