@@ -18,3 +18,27 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
+
+.modal {
+  opacity: 0;
+  transform: translateY(10px) scale(0);
+  animation: modal 300ms forwards;
+}
+
+.modal-overlay {
+  opacity: 0;
+  animation: overlay 300ms forwards;
+}
+
+@keyframes overlay {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes modal {
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
