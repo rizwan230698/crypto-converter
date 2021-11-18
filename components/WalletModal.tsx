@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
+import { formatEther } from "@ethersproject/units";
 import Button from "./Button";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
@@ -12,7 +13,9 @@ export type WalletModalProps = {
 
 const WalletModal = ({ onClose }: WalletModalProps) => {
   const [loading, setLoading] = useState(false);
-  const { active, account, activate, deactivate, chainId } = useWeb3React();
+  const { active, account, activate, deactivate, chainId, library } =
+    useWeb3React();
+  const [balance, setBalance] = useState<any>();
 
   const connect = async () => {
     try {
@@ -33,13 +36,34 @@ const WalletModal = ({ onClose }: WalletModalProps) => {
     }
   };
 
+  useEffect(() => {
+    if (!!account && !!library) {
+      library
+        .getBalance(account)
+        .then((balance: any) => {
+          setBalance(balance);
+        })
+        .catch(() => {
+          setBalance(null);
+        });
+
+      return () => {
+        setBalance(undefined);
+      };
+    }
+  }, [account, library, chainId]);
+
   const walletDetails = [
     {
       key: "Account",
       value: truncate(account),
     },
     { key: "Chain ID", value: chainId },
-    { key: "Balance", value: 10 },
+    {
+      key: "Balance",
+      value:
+        balance === null ? "Error" : balance ? `Ξ${formatEther(balance)}` : "",
+    },
   ];
 
   return (

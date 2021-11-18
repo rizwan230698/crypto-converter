@@ -1,5 +1,4 @@
-import Web3 from "web3";
-
+import { Web3Provider } from "@ethersproject/providers";
 export const getLibrary = (provider: any) => {
-  return new Web3(provider);
+  return new Web3Provider(provider);
 };
