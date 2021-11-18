@@ -1,21 +1,46 @@
 import { useState } from "react";
+import { useWeb3React } from "@web3-react/core";
 import Button from "./Button";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
-
-const walletDetails = [
-  { key: "Account", value: 989 },
-  { key: "Chain ID", value: 98 },
-  { key: "Balance", value: 10 },
-];
+import { injected } from "../utils/connector";
+import { truncate } from "../utils";
 
 export type WalletModalProps = {
   onClose?: () => void;
 };
 
 const WalletModal = ({ onClose }: WalletModalProps) => {
-  const [connnected, setConnnected] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { active, account, activate, deactivate, chainId } = useWeb3React();
+
+  const connect = async () => {
+    try {
+      setLoading(true);
+      await activate(injected);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const disconnect = () => {
+    try {
+      deactivate();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const walletDetails = [
+    {
+      key: "Account",
+      value: truncate(account),
+    },
+    { key: "Chain ID", value: chainId },
+    { key: "Balance", value: 10 },
+  ];
 
   return (
     <Modal>
@@ -29,14 +54,14 @@ const WalletModal = ({ onClose }: WalletModalProps) => {
         </button>
       </div>
 
-      {!connnected ? (
+      {!active ? (
         <div>
           <p className="my-10 text-red-400">
             Wallet not connected. Please click the "Connect Now" button below.
           </p>
 
           <div className="flex space-x-2">
-            <Button onClick={() => setConnnected(true)}>
+            <Button onClick={connect}>
               {loading ? <Spinner /> : "Connect"}
             </Button>
             <Button onClick={onClose} textColor="text-black bg-gray-300">
@@ -48,12 +73,14 @@ const WalletModal = ({ onClose }: WalletModalProps) => {
         <div className="flex flex-col mt-6">
           <table>
             <thead className="text-philippineGray uppercase text-xs">
-              <th className="text-left  px-10 py-4">key</th>
-              <th className="text-right  px-10 py-4">value</th>
+              <tr>
+                <th className="text-left  px-10 py-4">key</th>
+                <th className="text-right  px-10 py-4">value</th>
+              </tr>
             </thead>
             <tbody>
               {walletDetails.map((item) => (
-                <tr className="border-b border-gray-50">
+                <tr className="border-b border-gray-50" key={item.key}>
                   <td className="px-10 py-4">{item.key}</td>
                   <td className="px-10 py-4 text-right">{item.value}</td>
                 </tr>
@@ -67,7 +94,7 @@ const WalletModal = ({ onClose }: WalletModalProps) => {
 
           <Button
             minHeight="min-h-[40px]"
-            onClick={() => setConnnected(false)}
+            onClick={disconnect}
             bgColor="bg-red-500"
           >
             {loading ? <Spinner /> : "Disconnect"}
