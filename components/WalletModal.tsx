@@ -12,19 +12,19 @@ export type WalletModalProps = {
 };
 
 const WalletModal = ({ onClose }: WalletModalProps) => {
-  const [loading, setLoading] = useState(false);
+  const [connecting, setConnecting] = useState(false);
   const { active, account, activate, deactivate, chainId, library } =
     useWeb3React();
   const [balance, setBalance] = useState<any>();
 
   const connect = async () => {
     try {
-      setLoading(true);
+      setConnecting(true);
       await activate(injected);
-      setLoading(false);
+      setConnecting(false);
     } catch (error) {
       console.log(error);
-      setLoading(false);
+      setConnecting(false);
     }
   };
 
@@ -86,7 +86,7 @@ const WalletModal = ({ onClose }: WalletModalProps) => {
 
           <div className="flex space-x-2">
             <Button onClick={connect}>
-              {loading ? <Spinner /> : "Connect"}
+              {connecting ? <Spinner /> : "Connect"}
             </Button>
             <Button onClick={onClose} textColor="text-black bg-gray-300">
               Cancel
@@ -121,7 +121,7 @@ const WalletModal = ({ onClose }: WalletModalProps) => {
             onClick={disconnect}
             bgColor="bg-red-500"
           >
-            {loading ? <Spinner /> : "Disconnect"}
+            Disconnect
           </Button>
         </div>
       )}
