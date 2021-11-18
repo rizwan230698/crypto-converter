@@ -81,7 +81,8 @@ const WalletModal = ({ onClose }: WalletModalProps) => {
       {!active ? (
         <div>
           <p className="my-10 text-red-400">
-            Wallet not connected. Please click the "Connect Now" button below.
+            Wallet not connected. Please click the &ldquo;Connect Now&rdquo;
+            button below.
           </p>
 
           <div className="flex space-x-2">

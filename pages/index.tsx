@@ -31,7 +31,12 @@ const Home: NextPage = () => {
     <>
       <div className="h-screen bg-darkblue flex flex-col justify-center items-center px-5 lg:px-0">
         <div className="mb-20">
-          <Image src="/neptune-mutual.svg" height={64} width={330} />
+          <Image
+            src="/neptune-mutual.svg"
+            height={64}
+            width={330}
+            alt="Neptune Mutual"
+          />
         </div>
         <div className="flex flex-col rounded-md bg-white p-6 lg:p-14 lg:pb-8 w-full lg:max-w-md">
           <p className="text-3xl font-medium mb-[30px]">Crypto converter</p>
